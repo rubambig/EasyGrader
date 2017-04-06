@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Takes an input file and rotates all the words from each line
+# Removing noise is taken care of in the next script
+# Authors: Gloire Rubambiza, Kyle Hekhuis
+# Version: 03/28/2017
+
+#Open the input file
+if test $# -eq 0
+  then
+		  echo "Must provide arguments to script"
+			exit 1
+fi
+
+
+if ! test -f "$1"
+  then
+	    echo "$1 is not a file in current directory"
+			echo "Please provide a file in current directory"
+			exit 1
+	elif ! test -r "$1"
+	   then
+			   echo "Please provide a readable file"
+         exit 1
+     elif ! test -e "$1"
+        then
+            echo "Please provide a non-empty file"
+            exit 1
+fi
+
+cat $1 > redirect.dat
+while read line
+do
+  set $line
+  firstword=$1
+  origFirst=$1
+  shift
+  newline="$* $firstword"
+  echo $newline
+  set $newline
+  while [ "$1" != "$origFirst" ]
+  do
+    firstword=$1
+    shift
+    newline="$* $firstword"
+    echo $newline
+    set $newline
+  done
+done
