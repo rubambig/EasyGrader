@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Simplifies the grading process for the professor by
+# Automating the downloading and indexing of student files
+# Authors: Gloire Rubambiza, Kyle Hekhuis
+# Version: 04/13/2017
+
+unzip cis361p4.zip -d cis361p4
+touch report
+cd cis361p4 && ls > temp.txt                    # Switch to the directory
+touch some.txt
+cut -d_ -s -f2 temp.txt > some.txt               # Create a temp file to read from
+while read line
+do
+  if ! test -d $line
+    then
+        mkdir $line
+        wildcard="*_"$line"_*"
+        mv $wildcard $line"/"                # Move all files with directory name
+        
+        c_wildcard=$wildcard".c"             # Create wildcard for cipher file
+        c_newname="cipher.c"
+        l_wildcard=$wildcard"_*L*.txt"        # Create wildcard for let freq file
+        l_newname="LetFreq.txt"
+        makefile=$wildcard"_*m*"              # Create wildcard for makefile
+        makefile_newname="makefile"
+        m_wildcard="Pr*.txt"                    # Create wildcard for memo file
+        m_newname="memo.txt"
+        cd $line
+        mv $c_wildcard $c_newname              # Rename all files
+        mv $l_wildcard $l_newname
+        mv $makefile $makefile_newname
+        mv $m_wildcard $m_newname
+        
+        make -f ../../makefile -C . >> ../../report
+        make test -f ../../makefile -C . >> ../../report
+        cd ..
+  fi
+done < some.txt
+rm some.txt
+rm temp.txt

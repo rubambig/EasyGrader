@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Takes in an argument for a file of text and performs a circular shift 
+# on every line of the file for every possible shift that can occur on the
+# line. It then echos out each shift.
+# Authors: Gloire Rubambiza, Kyle Hekhuis
+# Version: 04/5/2017
+
+if test $# -eq 0
+	then
+		echo "Must provide arguments to script."
+		exit 1
+fi
+
+if ! test -f "$1"
+	then
+		echo "$1 is not a file in current directory."
+		echo "Please provide a file in current directory."
+		exit 1
+	elif ! test -r "$1"
+		then
+			echo "Please provide a readable file."
+			exit 1
+		elif ! test -e "$1"
+			then
+				echo "Please providea non-empty file"
+				exit 1
+fi
+
+while read line
+do
+	echo $line
+	set $line
+	origHead=$1
+	shift
+	line="$* $origHead"
+	set $line
+	while [ "$1" != "$origHead" ]
+	do
+	    echo $line
+		newHead=$1
+		shift
+		line="$* $newHead"
+		set $line
+	done
+done < "$1"

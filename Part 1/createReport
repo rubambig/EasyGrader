@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Takes an argument for an output file. Also takes in input
+# of lines of text. Stores every line of text it receives into
+# the pass output file. The output file is then sorted alphabetically.
+# Authors: Gloire Rubambiza, Kyle Hekhuis
+# Version: 04/5/2017
+
+if test $# -eq 0
+	then
+		echo "Must provide arguments to script."
+		exit 1
+fi
+
+if ! test -f "$1"
+	then
+		echo "$1 is not a file in current directory."
+		echo "Please provide a file in current directory."
+		exit 1
+	elif ! test -r "$1"
+		then
+			echo "Please provide a readable file."
+			exit 1
+		elif ! test -e "$1"
+			then
+				echo "Please providea non-empty file"
+				exit 1
+fi
+
+outFile=$1
+while read line
+do
+	echo $line >> $outFile
+done
+sort -uo $1 $1

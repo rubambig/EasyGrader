@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./shiftLines test.dat | ./filterNoiseWords noise.txt | ./createReport outfile.out

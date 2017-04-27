@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Takes in an argument for a file containing 'noise' words as well as
+# input containing lines of text. Filters out any lines of text
+# that start with a word in the 'noise' words file. Echos
+# out all lines that don't contain the 'noise' words.
+# Authors: Gloire Rubambiza, Kyle Hekhuis
+# Version: 04/5/2017
+
+if test $# -eq 0
+	then
+		echo "Must provide arguments to script."
+		exit 1
+fi
+
+if ! test -f "$1"
+	then
+		echo "$1 is not a file in current directory."
+		echo "Please provide a file in current directory."
+		exit 1
+	elif ! test -r "$1"
+		then
+			echo "Please provide a readable file."
+			exit 1
+		elif ! test -e "$1"
+			then
+				echo "Please providea non-empty file"
+				exit 1
+fi
+
+filterFile=$1
+while read line
+do
+	set $line
+	if ! grep -q $1 $filterFile
+		then
+			echo $line
+	fi
+done

@@ -1,0 +1,4 @@
+rm -r cis361p4
+rm report
+rm data.bak
+rm data.out
